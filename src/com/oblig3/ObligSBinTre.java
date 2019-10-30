@@ -98,7 +98,7 @@ public class ObligSBinTre<T> implements Beholder<T> {
       }
       return false;
   }
-  
+
   @Override
   public boolean fjern(T verdi) {
       if(verdi == null) {
@@ -106,7 +106,7 @@ public class ObligSBinTre<T> implements Beholder<T> {
       }
 
       Node<T> p = rot;
-      Node<T> q = null;   // q skal være forelder til p
+      Node<T> q = null;             // q skal være forelder til p
 
       while(p != null) {           // leter etter verdi
 
@@ -161,17 +161,17 @@ public class ObligSBinTre<T> implements Beholder<T> {
     antall--;   // det er nå én node mindre i treet
     return true;
   }
-  
+
   public int fjernAlle(T verdi) {
     if(tom()) {
       return 0;
     }
 
-    int verdiAntall = 0;
-    while (fjern(verdi)) {
-      verdiAntall++;
+    int antall = 0;
+    while (fjern(verdi) != false) {
+      antall++;
     }
-    return verdiAntall;
+    return antall;
   }
 
   @Override
@@ -203,7 +203,7 @@ public class ObligSBinTre<T> implements Beholder<T> {
   public boolean tom() {
     return antall == 0;
   }
-  
+
   @Override
   public void nullstill() {
     if (!tom()) {
@@ -212,7 +212,7 @@ public class ObligSBinTre<T> implements Beholder<T> {
     rot = null;
     antall = 0;      // treet er nå tomt
   }
-  
+
   private static <T> Node<T> nesteInorden(Node<T> p) {
       //Finner første verdien i inorden på et binært tre
       //Altså det som er nederst til venstre
@@ -259,10 +259,39 @@ public class ObligSBinTre<T> implements Beholder<T> {
   }
 
   public String omvendtString() {
-    throw new UnsupportedOperationException("Ikke kodet ennå!");
+      //Dersom treet er tomt
+      if (tom()) {
+          return "[]";
+      }
+
+      StringJoiner s = new StringJoiner(", ", "[", "]");
+
+      Stack<Node<T>> stack = new Stack<>();          //Lager en stack
+      Node<T> p = rot;                               //Starter i roten og går til ventre
+
+      for(; p.høyre != null; p = p.høyre) {
+          stack.push(p);
+      }
+
+      while(true) {
+          s.add(p.verdi.toString());
+          if (p.venstre != null) {
+              for (p = p.venstre; p.høyre != null; p = p.høyre) {
+                  stack.push(p);
+              }
+          } else if (!stack.isEmpty()) {
+              p = stack.pop();
+          } else {
+              break;
+          }
+      }
+      return s.toString();
   }
   
   public String høyreGren() {
+      if(tom()) {
+          return "[]";
+      }
     throw new UnsupportedOperationException("Ikke kodet ennå!");
   }
   

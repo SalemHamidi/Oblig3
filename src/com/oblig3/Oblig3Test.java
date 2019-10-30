@@ -212,7 +212,6 @@ public class Oblig3Test {
             }
         }
         assertEquals(antallFeil, 0);
-        */
     }  // slutt på Oppgave 4
 
 
