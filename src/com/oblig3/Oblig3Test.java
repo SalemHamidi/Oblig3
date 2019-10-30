@@ -168,7 +168,6 @@ public class Oblig3Test {
             System.out.println("ligge i leggInn() eller i nesteInorden().");
         }
         assertEquals(antallFeil, 0);
-
  */
     }  // slutt på Oppgave 3
 

@@ -9,8 +9,8 @@ public class ObligSBinTre<T> implements Beholder<T> {
     private static final class Node<T> {  // en indre nodeklasse
 
     private T verdi;                   // nodens verdi
-    private Node<T> venstre;
-    private Node<T> høyre;    // venstre og høyre barn
+    private Node<T> venstre;           //Venstre barn
+    private Node<T> høyre;             //Høyre barn
     private Node<T> forelder;          // forelder
 
     // konstruktør
@@ -46,30 +46,31 @@ public class ObligSBinTre<T> implements Beholder<T> {
   public boolean leggInn(T verdi) {
       Objects.requireNonNull(verdi, "Ulovlig med nullverdier!");
 
-      Node<T> p = rot;
-      Node<T> q = null;                        // p starter i roten
-      int temp = 0;                             // hjelpevariabel
+      Node<T> p = rot;                          // p starter i roten
+      Node<T> q = null;
+      int cmp = 0;                             // hjelpevariabel
 
       while (p != null) {                      // fortsetter til p er ute av treet
           q = p;                                 // q er forelder til p
-          temp = comp.compare(verdi, p.verdi);     // bruker komparatoren
-          p = temp < 0 ? p.venstre : p.høyre;     // flytter p
+          cmp = comp.compare(verdi, p.verdi);     // bruker komparatoren
+          p = cmp < 0 ? p.venstre : p.høyre;     // flytter p
       }
 
       // p er nå null, dvs. ute av treet, q er den siste vi passerte
 
-      p = new Node<>(verdi, null);                   // oppretter en ny node
+      p = new Node<>(verdi, q);                   // oppretter en ny node
 
       if (q == null) {
           rot = p;                  // p blir rotnode
       }
-      else if (temp < 0){
+      else if (cmp < 0){
          q.venstre = p;
       }                             // venstre barn til q
       else {
          q.høyre = p;                        // høyre barn til q
       }
-      antall++;                                // én verdi mer i treet
+      antall++;                                 // én verdi mer i treet
+      endringer++;
       return true;                             // vellykket innlegging
     }
 
@@ -82,10 +83,10 @@ public class ObligSBinTre<T> implements Beholder<T> {
       Node<T> p = rot;
 
       while (p != null) {
-         int cmp = comp.compare(verdi, p.verdi);
-         if (cmp < 0) p = p.venstre;
-         else if (cmp > 0) p = p.høyre;
-         else return true;
+          int cmp = comp.compare(verdi, p.verdi);
+          if (cmp < 0) p = p.venstre;
+          else if (cmp > 0) p = p.høyre;
+          else return true;
       }
       return false;
   }
@@ -171,23 +172,21 @@ public class ObligSBinTre<T> implements Beholder<T> {
   }
 
   public int antall(T verdi) {
+      Node<T> p = rot;
+      int antallVerdi = 0;
+      while (p != null) {
+          int cmp = comp.compare(verdi,p.verdi);
+          if (cmp < 0) {
+              p = p.venstre;
+          }
 
-    Node<T> p = rot;
-    int antallVerdi = 0;
-    while (p != null) {
-      int cmp = comp.compare(verdi,p.verdi);
-
-      if (cmp < 0) {
-        p = p.venstre;
+          else {
+              if(cmp == 0) {
+                  antallVerdi++;
+              }
+              p = p.høyre;
+          }
       }
-
-      else {
-        if (cmp == 0) {
-          antallVerdi++;
-        }
-        p = p.høyre;
-      }
-    }
     return antallVerdi;
   }
 
