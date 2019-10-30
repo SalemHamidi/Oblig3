@@ -241,20 +241,23 @@ public class ObligSBinTre<T> implements Beholder<T> {
           return "[]";
       }
 
-      StringJoiner s = new StringJoiner(", ", "[", "]");
+      Node<T> p = rot;              //Lag første node
 
-      Node<T> p = rot;                        //Lag første node
+      StringBuilder s = new StringBuilder();
+      s.append("[");
 
       //Sett første node som p.venstre - Første inorden verdien
-      while(p.venstre != null){
-          p = p.venstre;
+      while (p != null) {
+          while (p.venstre != null) {
+              p = p.venstre;
+          }
+          //Dersom nesteInorden sin verdi ikke er null - skriv ut
+          while (nesteInorden(p) != null) {
+              p = nesteInorden(p);
+              s.append(", " + p.verdi);
+          }
       }
-
-      //Dersom nesteInorden sin verdi ikke er null - skriv ut
-      while(p != null) {
-          s.add(p.verdi.toString());
-          p = nesteInorden(p);
-      }
+      s.append("]");
       return s.toString();
   }
 
