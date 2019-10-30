@@ -47,6 +47,12 @@ public class ObligSBinTre<T> implements Beholder<T> {
   public boolean leggInn(T verdi) {
       Objects.requireNonNull(verdi, "Ulovlig med nullverdier!");
 
+      if(tom()) {
+          rot = new Node<>(verdi, null);
+          antall++;
+          return true;
+      }
+
       Node<T> p = rot;                                // p starter i roten
       Node<T> q = null;
       int cmp = 0;                                    // hjelpevariabel
@@ -214,44 +220,43 @@ public class ObligSBinTre<T> implements Beholder<T> {
           p = p.venstre;
           return p;
       }
+      Node<T> q = p.forelder;
+
       //Dersom p har høyre barn blir dette neste inorden-verdi
-      if(p.høyre != null) {  //p har høyre barn
+      if(p.høyre != null) {
           return p.høyre;
       }
-      else { // må gå oppover i treet
+      else {    // må gå oppover i treet
           while (p.forelder != null && p.forelder.høyre == p) {
               p = p.forelder;
           }
-          return p.forelder;
+          return p;
       }
   }
 
   @Override
   public String toString() {
-    //Dersom tabellen er tom skriv ut "[]"
-    if(tom()) {
-      return "[]";
-    }
+        //Dersom tabellen er tom skriv ut "[]"
+      if(tom()) {
+          return "[]";
+      }
 
-    StringBuilder s = new StringBuilder();
-    s.append('[');
-    Node<T> p = rot; //Lag første node
+      StringJoiner s = new StringJoiner(", ", "[", "]");
 
-    //Sett første node som p.venstre - Første inorden verdien
-    while(p.venstre != null){
-      p = p.venstre;
-    }
-    s.append(p.verdi);
+      Node<T> p = rot;                        //Lag første node
 
-    //Dersom nesteInorden sin verdi ikke er null - skriv ut
-    while(nesteInorden(p) != null) {
-      s.append(", ");
-      p = nesteInorden(p);
-      s.append(p.verdi);
-    }
-      s.append(']');
+      //Sett første node som p.venstre - Første inorden verdien
+      while(p.venstre != null){
+          p = p.venstre;
+      }
+
+      //Dersom nesteInorden sin verdi ikke er null - skriv ut
+      while(p != null) {
+          s.add(p.verdi.toString());
+          p = nesteInorden(p);
+      }
       return s.toString();
-    }
+  }
 
   public String omvendtString() {
     throw new UnsupportedOperationException("Ikke kodet ennå!");
