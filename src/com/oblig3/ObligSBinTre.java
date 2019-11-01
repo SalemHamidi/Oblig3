@@ -98,67 +98,79 @@ public class ObligSBinTre<T> implements Beholder<T> {
     }
 
     @Override
-    public boolean fjern(T verdi) {
-        if (verdi == null) {
-            return false;  // treet har ingen nullverdier
-        }
+    public boolean fjern(T verdi)
+    {
+        if (verdi == null) return false;
 
         Node<T> p = rot;
-        Node<T> q = null;             // q skal være forelder til p
+        Node<T> q = null;           // q skal være forelder til p
 
-        while (p != null) {           // leter etter verdi
-            int cmp = comp.compare(verdi, p.verdi);      // sammenligner
+        while (p != null) {         // leter etter verdi
+            int cmp = comp.compare(verdi, p.verdi);             // sammenligner
             if (cmp < 0) {
                 q = p;
                 p = p.venstre;
-            }        // går til venstre
-
+            }
             else if (cmp > 0) {
                 q = p;
                 p = p.høyre;
-            }   // går til høyre
-            else break;    // den søkte verdien ligger i p
+            }
+            else break;             // den søkte verdien ligger i p
         }
-
         if (p == null) {
-            return false;   // finner ikke verdi
+            return false;                   // fant ikke verdi
         }
 
-        if (p.venstre == null || p.høyre == null) {  // Tilfelle 1) og 2)
-
-            Node<T> b = p.høyre != null ? p.venstre : p.høyre;  // b for barn
-            if (p == rot) {
-                rot = b;
-            } else if (p == q.venstre) {
-                q.venstre = b;
-                if (b != null) {
-                    //Oppdater forelder
+        if (p.venstre == null || p.høyre == null) {
+            Node<T> b = p.venstre != null ? p.venstre : p.høyre;
+            if (b != null) {
+                if (p == rot) {
+                    rot = b;
+                }
+                else if (p == q.venstre) {
+                    q.venstre = b;
+                    b.forelder = q;
+                }
+                else {
+                    q.høyre = b;
                     b.forelder = q;
                 }
             } else {
-                q.høyre = b;
-                if (b != null) {
-                    b.forelder = b;
+                if (p == rot) {
+                    rot = b;
+                }
+                else if (p == q.venstre) {
+                    q.venstre = b;
+                }
+                else {
+                    q.høyre = b;
                 }
             }
-        } else { // Tilfelle 3)
+        }
+        else {
             Node<T> s = p;
-            Node<T> r = p.høyre;   // finner neste i inorden
-
+            Node<T> r = p.høyre;
             while (r.venstre != null) {
-                s = r;    // s er forelder til r
+                s = r;
                 r = r.venstre;
             }
 
-            p.verdi = r.verdi;   // kopierer verdien i r til p
+            p.verdi = r.verdi;
 
             if (s != p) {
                 s.venstre = r.høyre;
-            } else {
+                if (r.høyre != null) {
+                    r.høyre.forelder = s;
+                }
+            }
+            else {
                 s.høyre = r.høyre;
+                if (r.høyre != null) {
+                    r.høyre.forelder = s;
+                }
             }
         }
-        antall--;   // det er nå én node mindre i treet
+        antall--;                       // det er nå én node mindre i treet
         return true;
     }
 
@@ -275,7 +287,6 @@ public class ObligSBinTre<T> implements Beholder<T> {
             }
             p = nesteInorden(p);
         }
-
         s.append("]");
         return s.toString();
     }

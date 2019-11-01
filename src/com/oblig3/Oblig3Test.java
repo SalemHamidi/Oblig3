@@ -232,7 +232,7 @@ public class Oblig3Test {
             antallFeil++;
             System.out.println("Oppgave 5a: Feil i fjern(T)!");
         }
-/*
+
         int[] a = {6, 3, 9, 1, 5, 7, 10, 2, 4, 8, 11, 6, 8};
         for (int verdi : a) tre.leggInn(verdi);
 
@@ -322,7 +322,7 @@ public class Oblig3Test {
             antallFeil++;
             System.out.println("Oppgave 5l: Feil i fjern(T)!");
         }
-
+/*
         tre.nullstill();
 
         if (tre.antall() != 0) {
@@ -400,8 +400,7 @@ public class Oblig3Test {
             System.out.println("pekere i treet skal nulles!");
         }
         assertEquals(antallFeil, 0);
-
- */
+*/
     }  // slutt på Oppgave 5
 
 
