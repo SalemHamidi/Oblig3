@@ -221,7 +221,7 @@ public class ObligSBinTre<T> implements Beholder<T> {
     @Override
     public void nullstill() {
         if (!tom()) {
-            return;
+            antall = 0;
         } else {
             Node<T> p = rot, q;
 

@@ -322,14 +322,14 @@ public class Oblig3Test {
             antallFeil++;
             System.out.println("Oppgave 5l: Feil i fjern(T)!");
         }
-/*
+
         tre.nullstill();
 
         if (tre.antall() != 0) {
             antallFeil++;
             System.out.println("Oppgave 5m: Feil i nullstill() - antall er feil!");
         }
-
+/*
         s = tre.toString();
 
         if (!s.equals("[]")) {
