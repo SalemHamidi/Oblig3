@@ -124,7 +124,7 @@ public class Oblig3Test {
             antallFeil++;
             System.out.println("Oppgave 3c: Feil i toString() for et tre med kun en verdi!");
         }
-/*
+
         // legger inn flere verdier
         int[] a = {6, 14, 1, 8, 12, 3, 7, 9, 11, 13, 2, 5, 4};
         for (int verdi : a) tre.leggInn(verdi);
@@ -168,7 +168,6 @@ public class Oblig3Test {
             System.out.println("ligge i leggInn() eller i nesteInorden().");
         }
         assertEquals(antallFeil, 0);
-*/
     }  // slutt på Oppgave 3
 
 
