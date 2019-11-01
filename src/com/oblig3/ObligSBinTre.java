@@ -118,7 +118,7 @@ public class ObligSBinTre<T> implements Beholder<T> {
             else break;             // den søkte verdien ligger i p
         }
         if (p == null) {
-            return false;                   // fant ikke verdi
+            return false;       // fant ikke verdien
         }
 
         if (p.venstre == null || p.høyre == null) {
