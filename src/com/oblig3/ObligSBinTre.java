@@ -3,6 +3,8 @@ package com.oblig3;
 
 ////////////////// ObligSBinTre /////////////////////////////////
 
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+
 import java.util.*;
 
 public class ObligSBinTre<T> implements Beholder<T> {
@@ -13,7 +15,6 @@ public class ObligSBinTre<T> implements Beholder<T> {
     private Node<T> høyre;             //Høyre barn
     private Node<T> forelder;          // forelder
 
-    // konstruktør
     private Node(T verdi, Node<T> v, Node<T> h, Node<T> forelder) {
         this.verdi = verdi;
         venstre = v; høyre = h;
@@ -109,15 +110,13 @@ public class ObligSBinTre<T> implements Beholder<T> {
       Node<T> q = null;             // q skal være forelder til p
 
       while(p != null) {           // leter etter verdi
+          int cmp = comp.compare(verdi, p.verdi);      // sammenligner
+          if(cmp < 0) {
+              q = p;
+              p = p.venstre;
+      }        // går til venstre
 
-      int temp = comp.compare(verdi, p.verdi);      // sammenligner
-
-      if(temp < 0) {
-          q = p;
-          p = p.venstre;
-      }      // går til venstre
-
-      else if (temp > 0) {
+      else if (cmp > 0) {
           q = p;
           p = p.høyre;
       }   // går til høyre
@@ -129,30 +128,38 @@ public class ObligSBinTre<T> implements Beholder<T> {
       }
 
       if(p.venstre == null || p.høyre == null){  // Tilfelle 1) og 2)
-          Node<T> b = p.venstre != null ? p.venstre : p.høyre;  // b for barn
+
+          Node<T> b = p.høyre != null ? p.venstre : p.høyre;  // b for barn
           if (p == rot) {
-            rot = b;
+              rot = b;
           }
           else if (p == q.venstre) {
-            q.venstre = b;
+              q.venstre = b;
+              if(b != null){
+                  //Oppdater forelder
+                  b.forelder = q;
+              }
           }
           else {
             q.høyre = b;
+            if(b != null) {
+                b.forelder = b;
+            }
           }
       }
       else { // Tilfelle 3)
-      Node<T> s = p;
-      Node<T> r = p.høyre;   // finner neste i inorden
+          Node<T> s = p;
+          Node<T> r = p.høyre;   // finner neste i inorden
 
-      while (r.venstre != null) {
-        s = r;    // s er forelder til r
-        r = r.venstre;
+          while (r.venstre != null) {
+              s = r;    // s er forelder til r
+              r = r.venstre;
       }
 
       p.verdi = r.verdi;   // kopierer verdien i r til p
 
       if (s != p) {
-        s.venstre = r.høyre;
+          s.venstre = r.høyre;
       }
       else{
         s.høyre = r.høyre;
@@ -163,15 +170,19 @@ public class ObligSBinTre<T> implements Beholder<T> {
   }
 
   public int fjernAlle(T verdi) {
-    if(tom()) {
-      return 0;
-    }
+      Objects.requireNonNull(verdi, "Ulovlig med nullverdier");
 
-    int antall = 0;
-    while (fjern(verdi) != false) {
-      antall++;
-    }
-    return antall;
+      if(tom()) {
+      return 0;
+      }
+
+      int antall = 0;
+
+      while (inneholder(verdi)) {
+          fjern(verdi);
+          antall++;
+      }
+      return antall;
   }
 
   @Override
@@ -206,32 +217,32 @@ public class ObligSBinTre<T> implements Beholder<T> {
 
   @Override
   public void nullstill() {
-    if (!tom()) {
-      nullstill();  // nullstiller
-    }
-    rot = null;
-    antall = 0;      // treet er nå tomt
+      if (!tom()) {
+          return;
+      }
+      else { Node<T> p = rot, q;
+
+          while (!tom()) {    //Så lengde treet ikke er tomt, fortsett
+              if (p.venstre != null) {    //Start på inorden
+                  p = p.venstre;
+              }
+              else if (p.høyre != null) { //Start på postorden
+                  p = p.høyre;
+              }
+              else if (antall == 1) {    // sletter siste element
+                  fjern(p.verdi);
+              }
+              else {    // utfører fjerning
+                  q = p;
+                  fjern(p.verdi);
+                  p = q.forelder;
+              }
+          }
+      }
   }
 
   private static <T> Node<T> nesteInorden(Node<T> p) {
-      //Finner første verdien i inorden på et binært tre
-      //Altså det som er nederst til venstre
-      while (p.venstre != null) {
-          p = p.venstre;
-          return p;
-      }
-      Node<T> q = p.forelder;
-
-      //Dersom p har høyre barn blir dette neste inorden-verdi
-      if(p.høyre != null) {
-          return p.høyre;
-      }
-      else {    // må gå oppover i treet
-          while (p.forelder != null && p.forelder.høyre == p) {
-              p = p.forelder;
-          }
-          return p;
-      }
+      throw new NotImplementedException();
   }
 
   @Override
