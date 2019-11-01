@@ -222,6 +222,7 @@ public class ObligSBinTre<T> implements Beholder<T> {
     public void nullstill() {
         if (!tom()) {
             antall = 0;
+
         } else {
             Node<T> p = rot, q;
 
@@ -327,7 +328,24 @@ public class ObligSBinTre<T> implements Beholder<T> {
       if(tom()) {
           return "[]";
       }
-    throw new UnsupportedOperationException("Ikke kodet ennå!");
+
+      StringBuilder s = new StringBuilder();
+      Node<T> p = rot;
+      s.append("[");
+
+      while(p != null && p.venstre != null) {
+          if(p.høyre != null) {
+              p = p.høyre;
+              s.append(p.verdi + ", ");
+          }
+          else {
+              p = p.venstre;
+              s.append(p.verdi + ", ");
+          }
+      }
+      s.append(p.verdi);
+      s.append("]");
+      return s.toString();
   }
   
   public String lengstGren() {
@@ -335,7 +353,7 @@ public class ObligSBinTre<T> implements Beholder<T> {
   }
   
   public String[] grener() {
-    throw new UnsupportedOperationException("Ikke kodet ennå!");
+      throw new UnsupportedOperationException("Ikke kodet ennå!");
   }
   
   public String bladnodeverdier() {

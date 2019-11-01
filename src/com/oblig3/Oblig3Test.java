@@ -329,7 +329,7 @@ public class Oblig3Test {
             antallFeil++;
             System.out.println("Oppgave 5m: Feil i nullstill() - antall er feil!");
         }
-/*
+
         s = tre.toString();
 
         if (!s.equals("[]")) {
@@ -344,7 +344,6 @@ public class Oblig3Test {
             System.out.println
                     ("Oppgave 5o: Skal ikke kaste unntak når et tomt tre nullstilles!");
         }
-
         try {
             if (tre.fjernAlle(0) != 0) {
                 antallFeil++;
@@ -400,7 +399,6 @@ public class Oblig3Test {
             System.out.println("pekere i treet skal nulles!");
         }
         assertEquals(antallFeil, 0);
-*/
     }  // slutt på Oppgave 5
 
 
@@ -434,7 +432,7 @@ public class Oblig3Test {
             System.out.print("Oppgave 6c: Feil - du har " + s + ", det skal");
             System.out.println(" være [3].");
         }
-
+/*
         int[] a = {1, 8, 2, 4, 7, 5, 6, 6};
         for (int verdi : a) tre.leggInn(verdi);
 
@@ -507,6 +505,8 @@ public class Oblig3Test {
             System.out.println(" være [F, H, O, K, J, I].");
         }
         assertEquals(antallFeil, 0);
+
+ */
     }  // slutt på Oppgave 6
 
 
