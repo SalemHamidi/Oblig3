@@ -432,7 +432,7 @@ public class Oblig3Test {
             System.out.print("Oppgave 6c: Feil - du har " + s + ", det skal");
             System.out.println(" være [3].");
         }
-/*
+
         int[] a = {1, 8, 2, 4, 7, 5, 6, 6};
         for (int verdi : a) tre.leggInn(verdi);
 
@@ -506,7 +506,6 @@ public class Oblig3Test {
         }
         assertEquals(antallFeil, 0);
 
- */
     }  // slutt på Oppgave 6
 
 
@@ -678,6 +677,7 @@ public class Oblig3Test {
             System.out.println
                     ("             det skal være " + svar);
         }
+
         assertEquals(antallFeil, 0);
     }  // slutt på Oppgave 8
 
