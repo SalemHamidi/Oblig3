@@ -367,19 +367,26 @@ public class ObligSBinTre<T> implements Beholder<T> {
 
 
     public String lengstGren() {
-        Node<T> p = rot;
-        StringBuilder s = new StringBuilder();
-
         if (tom()) {
             return "[]";
         }
-        s.append("[");
-        if (antall == 1) {
-            s.append(p.verdi);
-        }
+        String[] grener = grener();
+        Node<T> p = rot;
+        int antall = 0;
+        int lengste = 0;
+        String lengstegren = "";
 
-        s.append("]");
-        return toString();
+        for(int i = 0; i < grener.length; i++) {
+            String gren = grener[i];
+            String[] antallNoder = gren.split(",");
+            antall = antallNoder.length;
+
+            if(antall > lengste) {
+                lengstegren = gren;
+                lengste = antall;
+            }
+        }
+        return lengstegren;
     }
 
     public String[] grener() {
