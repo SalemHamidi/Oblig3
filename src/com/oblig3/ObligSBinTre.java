@@ -219,7 +219,6 @@ public class ObligSBinTre<T> implements Beholder<T> {
     public void nullstill() {
         if (!tom()) {
             antall = 0;
-
         }
         Node<T> p = rot;
 
@@ -347,21 +346,22 @@ public class ObligSBinTre<T> implements Beholder<T> {
             return "[]";
         }
 
-        StringBuilder s = new StringBuilder();
         Node<T> p = rot;
-        s.append("[");
 
-        while (p != null && p.venstre != null) {
-            if (p.høyre != null) {
+        StringJoiner s = new StringJoiner(", ", "[", "]");
+
+        s.add(p.verdi.toString());
+
+        while(p.høyre != null || p.venstre != null){
+            if(p.høyre != null){
                 p = p.høyre;
-                s.append(p.verdi + ", ");
-            } else {
+                s.add(p.verdi.toString());
+            }
+            else{
                 p = p.venstre;
-                s.append(p.verdi + ", ");
+                s.add(p.verdi.toString());
             }
         }
-        s.append(p.verdi);
-        s.append("]");
         return s.toString();
     }
 
