@@ -220,45 +220,26 @@ public class ObligSBinTre<T> implements Beholder<T> {
         if (!tom()) {
             antall = 0;
         }
-        Node<T> p = rot;
 
-        //evt while rot  != null?
-        while (p.høyre != null && p.venstre != null) {
-            if (p.venstre != null) {
+        //Implementasjonen er litt feil, men det jeg ville ha gjort er å bruke en dybde først metode som rekursivt går
+        //gjennom hver enestre gren og setter p.høyre && p.venstre = null
+        //helt til den kommer til rot noden som dermed kun vil ha ingen barn hvor man fjerner p = rot = null
+        Node<T> p = rot, q;
+        while (!tom()) {    //Så lengde treet ikke er tomt, fortsett
+            if (p.venstre != null) {    //Start på inorden
                 p = p.venstre;
-            }
-            if (p.høyre != null) {
+            } else if (p.høyre != null) { //Start på postorden
                 p = p.høyre;
-            } else if (p.høyre == null && p.venstre == null) {
-                p = p.forelder;
+            } else if (antall == 1) {    // sletter siste element
+                fjern(p.verdi);
+            } else {    // utfører fjerning
+                q = p;
+                fjern(p.verdi);
+                p = q.forelder;
             }
-
         }
-        p.venstre = null;
-        p.høyre = null;
     }
 
-    //implementasjonen er litt feil, men det jeg ville ha gjort er å bruke en dybde først metode som rekursivt går
-    //gjennom hver enestre gren og setter p.høyre && p.venstre = null
-    //helt til den kommer til rot noden som dermed kun vil ha ingen barn hvor man fjerner p = rot = null
-        /*else {
-            Node<T> p = rot, q;
-            while (!tom()) {    //Så lengde treet ikke er tomt, fortsett
-                if (p.venstre != null) {    //Start på inorden
-                    p = p.venstre;
-                } else if (p.høyre != null) { //Start på postorden
-                    p = p.høyre;
-                } else if (antall == 1) {    // sletter siste element
-                    fjern(p.verdi);
-                } else {    // utfører fjerning
-                    q = p;
-                    q = p;
-                    fjern(p.verdi);
-                    p = q.forelder;
-                }
-            }
-        }
-        */
 
     private static <T> Node<T> nesteInorden(Node<T> p) {
         //Vi vet allerde hvilken verdi som er den første
