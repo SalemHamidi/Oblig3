@@ -76,7 +76,8 @@ public class ObligSBinTre<T> implements Beholder<T> {
             q.høyre = p;                               // høyre barn til q
         }
 
-        antall++;                                       // én verdi mer i treet
+        antall++;                                        // én verdi mer i treet
+        endringer++;                                    //fra oppgave 9
         return true;                                    // vellykket innlegging
     }
 
@@ -168,6 +169,7 @@ public class ObligSBinTre<T> implements Beholder<T> {
             }
         }
         antall--;                       // det er nå én node mindre i treet
+        endringer++;                    //fra oppgave 9
         return true;
     }
 
@@ -238,6 +240,7 @@ public class ObligSBinTre<T> implements Beholder<T> {
                 p = q.forelder;
             }
         }
+        endringer++;                                //Fra oppgave 9
     }
 
 
@@ -495,23 +498,47 @@ public class ObligSBinTre<T> implements Beholder<T> {
   }
   
     private class BladnodeIterator implements Iterator<T> {
-    private Node<T> p = rot, q = null;
-    private boolean removeOK = false;
-    private int iteratorendringer = endringer;
-    
-    private BladnodeIterator()  // konstruktør
-    {
-      throw new UnsupportedOperationException("Ikke kodet ennå!");
-    }
-    
+        private Node<T> p = rot, q = null;
+        private boolean removeOK = false;
+        private int iteratorendringer = endringer;
+
+        private BladnodeIterator()  // konstruktør
+        {
+            if (p == null){
+                return;
+            }
+            while (p != null && (p.venstre != null || p.høyre != null)) {
+                if (p.venstre == null){
+                    p = p.høyre;
+                }else{
+                    p = p.venstre;
+                }
+            }
+        }
     @Override
     public boolean hasNext() {
       return p != null;  // Denne skal ikke endres!
     }
-    
+
     @Override
     public T next() {
-      throw new UnsupportedOperationException("Ikke kodet ennå!");
+        if (!hasNext()) {
+            throw new NoSuchElementException("Har ingen neste verdi");
+        }
+
+        if (endringer != iteratorendringer) {
+            throw new ConcurrentModificationException("Det er forskjell mellom endringer og iteratorendringer");
+        }
+
+        T temp = p.verdi;
+        q = p;
+        p = nesteInorden(p);
+
+        while (p != null && (p.venstre != null || p.høyre != null)) {
+            p = nesteInorden(p);
+        }
+        removeOK = true;
+        return temp;
     }
     
     @Override
